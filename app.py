@@ -38,6 +38,7 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+# FIXME: Logic breaks here — attempts started at 1, so the player lost a turn.
 # FIX: Start at 0 attempts (was 1), so a fresh game gets the full attempt limit.
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
@@ -78,6 +79,7 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+# FIXME: Logic breaks here — New Game never reset status, so st.stop() ended every new round.
 # FIX: New Game only reset attempts and secret, so status stayed "won"/"lost" and
 # st.stop() below blocked every new round. Found with Claude Code; now all game
 # state is reset and the secret uses the current difficulty's range.
@@ -108,6 +110,7 @@ if submit:
     else:
         st.session_state.history.append(guess_int)
 
+        # FIXME: Logic breaks here — on even attempts the secret became a str, so "100" < "21".
         # FIX: Removed the code that turned the secret into a str on even attempts,
         # which made check_guess compare strings. Hints are fixed in logic_utils.py.
         outcome = check_guess(guess_int, st.session_state.secret)

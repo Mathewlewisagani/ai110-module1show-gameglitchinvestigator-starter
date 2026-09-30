@@ -32,6 +32,7 @@ def parse_guess(raw: str):
     return True, value, None
 
 
+# FIXME: Logic breaks here — "Too High" told the player to go HIGHER (messages swapped).
 # FIX: Refactored from app.py with Claude Code. The old version returned
 # "Go HIGHER!" when the guess was too high (messages swapped), and fell back to
 # string comparison when app.py passed the secret as a str ("100" < "21").
